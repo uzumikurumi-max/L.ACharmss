@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Charms Bracelets Customization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .charm-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .charm {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: white;
+            cursor: pointer;
+            text-align: center;
+            width: 150px;
+        }
+        .charm img {
+            width: 100px;
+            height: 100px;
+        }
+        .price {
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+            color: green;
+        }
+        .customization {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        .custom-photo {
+            margin-top: 20px;
+        }
+        .custom-photo img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+        }
+        #total-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italian Charms Bracelets Customization</h1>
+    
+    <h2>Select Charms</h2>
+    <p>Tap on a charm to see its price and add to your order.</p>
+    <div class="charm-container">
+        <div class="charm" data-type="plain" data-price="3.88">
+            <img src="https://via.placeholder.com/100?text=Charm1" alt="Charm 1">
+            <p>Charm 1 (Plain)</p>
+            <div class="price">Price: 3.88 pesos</div>
+        </div>
+        <div class="charm" data-type="plain" data-price="3.88">
+            <img src="https://via.placeholder.com/100?text=Charm2" alt="Charm 2">
+            <p>Charm 2 (Plain)</p>
+            <div class="price">Price: 3.88 pesos</div>
+        </div>
+        <div class="charm" data-type="plain" data-price="3.88">
+            <img src="https://via.placeholder.com/100?text=Charm3" alt="Charm 3">
+            <p>Charm 3 (Plain)</p>
+            <div class="price">Price: 3.88 pesos</div>
+        </div>
+        <!-- Add more charms as needed -->
+    </div>
+    
+    <div class="customization">
+        <h2>Customize Your Bracelet</h2>
+        <label for="links">Number of Links (Standard: 18):</label>
+        <input type="number" id="links" value="18" min="1"><br><br>
+        
+        <p>Selected Charms:</p>
+        <ul id="selected-charms"></ul>
+        
+        <div class="custom-photo">
+            <h3>Custom Photo</h3>
+            <p>Upload or select a custom photo for charms:</p>
+            <input type="file" id="photo-upload" accept="image/*">
+            <img id="custom-photo-preview" src="https://via.placeholder.com/100?text=Custom+Photo" alt="Custom Photo">
+            <p>Note: Custom photo per link costs 25 pesos instead of 3.88 pesos.</p>
+        </div>
+        
+        <button id="calculate-price">Calculate Total Price</button>
+        <div id="total-price"></div>
+    </div>
+
+    <script>
+        // Handle charm selection
+        const charms = document.querySelectorAll('.charm');
+        const selectedCharmsList = document.getElementById('selected-charms');
+        let selectedCharms = [];
+
+        charms.forEach(charm => {
+            charm.addEventListener('click', () => {
+                const priceDiv = charm.querySelector('.price');
+                priceDiv.style.display = priceDiv.style.display === 'block' ? 'none' : 'block';
+                
+                // Add to selected list (simple toggle for demo)
+                const charmName = charm.querySelector('p').textContent;
+                const type = charm.dataset.type;
+                const price = parseFloat(charm.dataset.price);
+                
+                if (selectedCharms.some(c => c.name === charmName)) {
+                    selectedCharms = selectedCharms.filter(c => c.name !== charmName);
+                } else {
+                    selectedCharms.push({ name: charmName, type, price });
+                }
+                
+                updateSelectedList();
+            });
+        });
+
+        function updateSelectedList() {
+            selectedCharmsList.innerHTML = '';
+            selectedCharms.forEach(charm => {
+                const li = document.createElement('li');
+                li.textContent = `${charm.name} - ${charm.type} - ${charm.price} pesos`;
+                selectedCharmsList.appendChild(li);
+            });
+        }
+
+        // Handle photo upload
+        const photoUpload = document.getElementById('photo-upload');
+        const customPhotoPreview = document.getElementById('custom-photo-preview');
+
+        photoUpload.addEventListener('change', (event) => {
+            const file = event.target.fi
