@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Charms Bracelets Customizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .charm {
+            border: 2px solid #ddd;
+            padding: 10px;
+            background-color: white;
+            cursor: pointer;
+            text-align: center;
+            width: 150px;
+            transition: border-color 0.3s;
+        }
+        .charm:hover {
+            border-color: #007bff;
+        }
+        .charm.selected {
+            border-color: green;
+        }
+        .charm img {
+            width: 100px;
+            height: 100px;
+        }
+        .price {
+            margin-top: 10px;
+            font-weight: bold;
+            color: green;
+        }
+        .customizer {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 600px;
+        }
+        .preview {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .preview img {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+        }
+        #total-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italian Charms Bracelets Customizer</h1>
+    
+    <h2>Select Your Charms</h2>
+    <div class="gallery">
+        <div class="charm" data-type="plain" data-price="3.88">
+            <img src="https://via.placeholder.com/100?text=Charm1" alt="Charm 1">
+            <p>Charm 1 (Plain)</p>
+            <div class="price">3.88 pesos/link</div>
+        </div>
+        <div class="charm" data-type="plain" data-price="3.88">
+            <img src="https://via.placeholder.com/100?text=Charm2" alt="Charm 2">
+            <p>Charm 2 (Plain)</p>
+            <div class="price">3.88 pesos/link</div>
+        </div>
+        <div class="charm" data-type="custom" data-price="25.00">
+            <img src="https://via.placeholder.com/100?text=CustomCharm" alt="Custom Charm">
+            <p>Custom Photo Charm</p>
+            <div class="price">25.00 pesos/link</div>
+        </div>
+        <!-- Add more charms -->
+    </div>
+    
+    <div class="customizer">
+        <h2>Customize Your Bracelet</h2>
+        <div class="preview">
+            <h3>Preview</h3>
+            <img id="bracelet-preview" src="https://via.placeholder.com/200?text=Bracelet+Preview" alt="Bracelet Preview">
+        </div>
+        
+        <label for="links">Number of Links (Standard: 18):</label>
+        <input type="number" id="links" value="18" min="1"><br><br>
+        
+        <p>Selected Charms:</p>
+        <ul id="selected-charms"></ul>
+        
+        <div class="custom-photo">
+            <h3>Upload Custom Photo</h3>
+            <input type="file" id="photo-upload" accept="image/*">
+            <p>Note: Custom photos cost 25 pesos per link.</p>
+        </div>
+        
+        <button id="calculate-price">Calculate Price</button>
+        <div id="total-price"></div>
+        <button id="add-to-cart">Add to Cart</button>
+    </div>
+
+    <script>
+        const charms = document.querySelectorAll('.charm');
+        const selectedCharmsList = document.getElementById('selected-charms');
+        let selectedCharms = [];
+        const previewImg = document.getElementById('bracelet-preview');
+
+        charms.forEach(charm => {
+            charm.addEventListener('click', () => {
+                charm.classList.toggle('selected');
+                const charmName = charm.querySelector('p').textContent;
+                const type = charm.dataset.type;
+                const price = parseFloat(charm.dataset.price);
+                
+                if (selectedCharms.some(c => c.name === charmName)) {
+                    selectedCharms = selectedCharms.filter(c => c.name !== charmName);
+                } else {
+                    selectedCharms.push({ name: charmName, type, price });
+                }
+                
+                updateSelectedList();
+                updatePreview();
+            });
+        });
+
+        function updateSelectedList() {
+            selectedCharmsList.innerHTML = '';
+            selectedCharms.forEach(charm => {
+                const li = document.createElement('li');
+                li.textContent = `${charm.name} - ${charm.price} pesos/link`;
+                selectedCharmsList.appendChild(li);
+            });
+        }
+
+        function updatePreview() {
+            // Simple preview update – in a rea
